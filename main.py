@@ -20,8 +20,11 @@ if __name__ == '__main__':
     end_id = ''
     # 将size替换为20, endid = 0
     url = re.sub(r'(size=)\d+', r'\g<1>20', warp_url)
-    url = re.sub(r'(end_id=)\d+', r'\g<1>0', warp_url)
-    url = re.sub(r'(gacha_type=)\d+', r'\g<1>1', warp_url)
+    url = re.sub(r'(end_id=)\d+', r'\g<1>0', url)
+    # 11为限定池子
+    # 12为限定光锥
+    # 1为普通池子
+    url = re.sub(r'(gacha_type=)\d+', r'\g<1>11', url)
     # 创造excel workbook
     workbook = openpyxl.Workbook()
     file_name = '抽卡记录.xlsx'
@@ -37,7 +40,7 @@ if __name__ == '__main__':
             if len(data['data']['list']) == 0:
                 break
             if is_first_loop:
-                #过期会有auth key timeout
+                # 过期会有auth key timeout
                 df = pd.json_normalize(data['data']['list'])
                 is_first_loop = False
             else:
